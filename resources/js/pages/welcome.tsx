@@ -49,11 +49,14 @@ export default function Welcome() {
                                 <br />
                                 I maintained the styling of React starter kit
                                 <br /><br />
-                                <strong>Note:</strong> I used copilot for seeding, migrations, and some components.
+                                <strong>Note:</strong> I used copilot for seeding, migrations, and some components,
+                                <br />
+                                correct structuring of requests and controllers,
+                                <br />
+                                and speeding up the styling of components
                                 <br />
                                 I did not use it for the main logic, only for correcting bugs that I haven't fixed.
-                                <br />
-                                and the correct structuring of requests and controllers.
+
                                 <br /><br />
                                 <strong>Note:</strong> I am more familiar with Laravel 11 as that was the last version of Laravel I used, so I am still exploring my way around Laravel 12.
                             </p>
