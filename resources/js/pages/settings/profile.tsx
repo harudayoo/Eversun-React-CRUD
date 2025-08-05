@@ -20,16 +20,20 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type ProfileForm = {
-    name: string;
+    first_name: string;
+    last_name: string;
     email: string;
+    contact_number: string;
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.name,
+        first_name: auth.user.first_name,
+        last_name: auth.user.last_name,
         email: auth.user.email,
+        contact_number: auth.user.contact_number,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -50,19 +54,51 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
                     <form onSubmit={submit} className="space-y-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="first_name">First Name</Label>
 
                             <Input
-                                id="name"
+                                id="first_name"
                                 className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                value={data.first_name}
+                                onChange={(e) => setData('first_name', e.target.value)}
                                 required
-                                autoComplete="name"
-                                placeholder="Full name"
+                                autoComplete="given-name"
+                                placeholder="First name"
                             />
 
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError className="mt-2" message={errors.first_name} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="last_name">Last Name</Label>
+
+                            <Input
+                                id="last_name"
+                                className="mt-1 block w-full"
+                                value={data.last_name}
+                                onChange={(e) => setData('last_name', e.target.value)}
+                                required
+                                autoComplete="family-name"
+                                placeholder="Last name"
+                            />
+
+                            <InputError className="mt-2" message={errors.last_name} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="contact_number">Contact Number</Label>
+
+                            <Input
+                                id="contact_number"
+                                className="mt-1 block w-full"
+                                value={data.contact_number}
+                                onChange={(e) => setData('contact_number', e.target.value)}
+                                required
+                                autoComplete="tel"
+                                placeholder="Contact number"
+                            />
+
+                            <InputError className="mt-2" message={errors.contact_number} />
                         </div>
 
                         <div className="grid gap-2">

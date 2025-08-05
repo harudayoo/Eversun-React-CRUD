@@ -6,7 +6,7 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
 use App\Models\Student;
-use App\Models\Attendant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -59,7 +59,7 @@ class TransactionController extends Controller
     public function create()
     {
         $students = Student::orderBy('first_name')->get();
-        $attendants = Attendant::orderBy('first_name')->get();
+        $attendants = User::orderBy('first_name')->get();
 
         return Inertia::render('Transactions/Create', [
             'students' => $students,
@@ -96,7 +96,7 @@ class TransactionController extends Controller
     public function edit(Transaction $transaction)
     {
         $students = Student::orderBy('first_name')->get();
-        $attendants = Attendant::orderBy('first_name')->get();
+        $attendants = User::orderBy('first_name')->get();
         $transaction->load(['student', 'attendant']);
 
         return Inertia::render('Transactions/Edit', [

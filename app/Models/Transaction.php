@@ -18,7 +18,7 @@ class Transaction extends Model
      */
     protected $fillable = [
         'students_id',
-        'attendants_id',
+        'users_id',
         'transaction_date',
         'transaction_type',
         'status',
@@ -41,7 +41,7 @@ class Transaction extends Model
 
     public function attendant(): BelongsTo
     {
-        return $this->belongsTo(Attendant::class, 'attendants_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
 
     public function loans(): HasMany

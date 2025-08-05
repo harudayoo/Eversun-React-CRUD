@@ -12,7 +12,7 @@ import { Link } from '@inertiajs/react';
 interface FormField {
   name: string;
   label: string;
-  type: 'text' | 'email' | 'number' | 'date' | 'select' | 'textarea';
+  type: 'text' | 'email' | 'number' | 'date' | 'select' | 'textarea' | 'password';
   required?: boolean;
   options?: { value: string | number; label: string }[];
   placeholder?: string;

@@ -56,14 +56,14 @@ export default function LoansCreate({ books, students, attendants }: LoansCreate
     const { data, setData, post, processing, errors } = useForm({
         books_id: '',
         students_id: '',
-        attendants_id: '',
+        users_id: '',
         loan_date: new Date().toISOString().split('T')[0],
         due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 14 days from now
     });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/loans');
+        post(route('loans.store'));
     };
 
     const handleBookSelect = (bookId: string) => {
@@ -239,10 +239,10 @@ export default function LoansCreate({ books, students, attendants }: LoansCreate
                         <CardContent className="space-y-4">
                             <div className="grid gap-4 sm:grid-cols-3">
                                 <div>
-                                    <Label htmlFor="attendants_id">Library Attendant</Label>
+                                    <Label htmlFor="users_id">Library Attendant</Label>
                                     <Select
-                                        value={data.attendants_id}
-                                        onValueChange={(value) => setData('attendants_id', value)}
+                                        value={data.users_id}
+                                        onValueChange={(value) => setData('users_id', value)}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select attendant..." />
@@ -255,8 +255,8 @@ export default function LoansCreate({ books, students, attendants }: LoansCreate
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                    {errors.attendants_id && (
-                                        <p className="text-sm text-red-600 mt-1">{errors.attendants_id}</p>
+                                    {errors.users_id && (
+                                        <p className="text-sm text-red-600 mt-1">{errors.users_id}</p>
                                     )}
                                 </div>
 

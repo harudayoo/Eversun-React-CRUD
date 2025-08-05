@@ -28,10 +28,11 @@ class UpdateAttendantRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('attendants', 'email')->ignore(request()->route('attendant')),
+                Rule::unique('users', 'email')->ignore(request()->route('attendant')),
             ],
             'contact_number' => 'required|string|max:20',
             'hire_date' => 'required|date',
+            'password' => 'nullable|string|min:8|confirmed',
         ];
     }
 

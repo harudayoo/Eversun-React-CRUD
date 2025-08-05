@@ -33,6 +33,20 @@ export default function AttendantsCreate() {
       placeholder: 'Enter email address',
     },
     {
+      name: 'password',
+      label: 'Password',
+      type: 'password' as const,
+      required: true,
+      placeholder: 'Enter password',
+    },
+    {
+      name: 'password_confirmation',
+      label: 'Confirm Password',
+      type: 'password' as const,
+      required: true,
+      placeholder: 'Confirm password',
+    },
+    {
       name: 'contact_number',
       label: 'Contact Number',
       type: 'text' as const,

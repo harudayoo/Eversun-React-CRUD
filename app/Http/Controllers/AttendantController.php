@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAttendantRequest;
 use App\Http\Requests\UpdateAttendantRequest;
-use App\Models\Attendant;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class AttendantController extends Controller
@@ -15,7 +16,7 @@ class AttendantController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Attendant::query();
+        $query = User::query();
 
         // Search functionality
         if ($request->filled('search')) {
@@ -49,7 +50,10 @@ class AttendantController extends Controller
      */
     public function store(StoreAttendantRequest $request)
     {
-        Attendant::create($request->validated());
+        $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
+
+        User::create($validated);
 
         return redirect()->route('attendants.index')
             ->with('success', 'Attendant created successfully.');
@@ -58,7 +62,7 @@ class AttendantController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attendant $attendant)
+    public function show(User $attendant)
     {
         return Inertia::render('Attendants/Show', [
             'attendant' => $attendant,
@@ -68,7 +72,7 @@ class AttendantController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attendant $attendant)
+    public function edit(User $attendant)
     {
         return Inertia::render('Attendants/Edit', [
             'attendant' => $attendant,
@@ -78,9 +82,18 @@ class AttendantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttendantRequest $request, Attendant $attendant)
+    public function update(UpdateAttendantRequest $request, User $attendant)
     {
-        $attendant->update($request->validated());
+        $validated = $request->validated();
+
+        // Only hash password if it's provided
+        if (!empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        $attendant->update($validated);
 
         return redirect()->route('attendants.index')
             ->with('success', 'Attendant updated successfully.');
@@ -89,7 +102,7 @@ class AttendantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attendant $attendant)
+    public function destroy(User $attendant)
     {
         try {
             $attendant->delete();

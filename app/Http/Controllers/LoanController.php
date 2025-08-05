@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateLoanRequest;
 use App\Models\Loan;
 use App\Models\Book;
 use App\Models\Student;
-use App\Models\Attendant;
+use App\Models\User;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -71,7 +71,7 @@ class LoanController extends Controller
                           ->orderBy('last_name')
                           ->get();
 
-        $attendants = Attendant::orderBy('first_name')
+        $attendants = User::orderBy('first_name')
                               ->orderBy('last_name')
                               ->get();
 
@@ -92,7 +92,7 @@ class LoanController extends Controller
         // Create transaction first
         $transaction = Transaction::create([
             'students_id' => $validated['students_id'],
-            'attendants_id' => $validated['attendants_id'],
+            'users_id' => $validated['users_id'],
             'transaction_date' => Carbon::now(),
             'transaction_type' => 'borrow',
             'status' => 'completed',
@@ -155,7 +155,7 @@ class LoanController extends Controller
     public function returnBook(Request $request, Loan $loan)
     {
         $request->validate([
-            'attendants_id' => 'required|exists:attendants,id',
+            'users_id' => 'required|exists:users,id',
             'payment_amount' => 'nullable|numeric|min:0',
         ]);
 
@@ -169,7 +169,7 @@ class LoanController extends Controller
         // Create return transaction
         Transaction::create([
             'students_id' => $loan->transaction->students_id,
-            'attendants_id' => $request->input('attendants_id'),
+            'users_id' => $request->input('users_id'),
             'transaction_date' => Carbon::now(),
             'transaction_type' => 'return',
             'status' => 'completed',

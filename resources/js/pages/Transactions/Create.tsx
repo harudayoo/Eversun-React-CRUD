@@ -39,7 +39,7 @@ export default function TransactionsCreate({ students, attendants }: Transaction
       })),
     },
     {
-      name: 'attendants_id',
+      name: 'users_id',
       label: 'Attendant',
       type: 'select' as const,
       required: true,

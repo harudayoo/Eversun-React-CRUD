@@ -52,7 +52,7 @@ export default function TransactionsEdit({ transaction, students, attendants }: 
       })),
     },
     {
-      name: 'attendants_id',
+      name: 'users_id',
       label: 'Attendant',
       type: 'select' as const,
       required: true,

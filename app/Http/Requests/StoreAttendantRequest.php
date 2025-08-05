@@ -24,9 +24,10 @@ class StoreAttendantRequest extends FormRequest
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:attendants,email',
+            'email' => 'required|email|unique:users,email',
             'contact_number' => 'required|string|max:20',
             'hire_date' => 'required|date',
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 
