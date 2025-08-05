@@ -54,7 +54,7 @@ export default function LoansShow({ loan }: LoansShowProps) {
     const handleReturnBook = () => {
         if (confirm('Are you sure you want to mark this book as returned?')) {
             router.patch(`/loans/${loan.id}/return`, {
-                attendants_id: loan.transaction.attendant.id,
+                users_id: loan.transaction.attendant.id,
                 payment_amount: 0,
             });
         }

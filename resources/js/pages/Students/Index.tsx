@@ -74,7 +74,6 @@ export default function StudentsIndex({ students, filters }: StudentsIndexProps)
     },
   ];
 
-  // Transform the students data to match DataTable expectations
   const transformedStudents = {
     data: students.data.map(student => ({ ...student } as Record<string, unknown>)),
     links: students.links,

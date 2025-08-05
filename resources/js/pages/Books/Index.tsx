@@ -160,7 +160,6 @@ export default function BooksIndex({ books, filters }: BooksIndexProps) {
     </Select>
   );
 
-  // Transform the books data to match DataTable expectations
   const transformedBooks = {
     data: books.data.map(book => ({ ...book } as Record<string, unknown>)),
     links: books.links,

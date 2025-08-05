@@ -124,7 +124,7 @@ export default function StudentsShow({ student }: StudentsShowProps) {
           </Card>
         </div>
 
-        {/* Transaction History - Placeholder */}
+        {/* Transaction History */}
         <Card>
           <CardHeader>
             <CardTitle>Transaction History</CardTitle>

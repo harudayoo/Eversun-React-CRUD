@@ -76,7 +76,6 @@ export default function AttendantsEdit({ attendant }: AttendantsEditProps) {
     },
   ];
 
-  // Transform attendant data to exclude password fields for initial form data
   const formData = {
     first_name: attendant.first_name,
     last_name: attendant.last_name,

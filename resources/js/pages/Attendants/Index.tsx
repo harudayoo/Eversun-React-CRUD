@@ -68,7 +68,6 @@ export default function AttendantsIndex({ attendants, filters }: AttendantsIndex
     },
   ];
 
-  // Transform the attendants data to match DataTable expectations
   const transformedAttendants = {
     data: attendants.data.map(attendant => ({ ...attendant } as Record<string, unknown>)),
     links: attendants.links,

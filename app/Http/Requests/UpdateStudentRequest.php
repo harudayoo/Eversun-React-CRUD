@@ -8,7 +8,7 @@ use Illuminate\Validation\Rule;
 class UpdateStudentRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     *
      */
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class UpdateStudentRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     *
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -37,7 +37,7 @@ class UpdateStudentRequest extends FormRequest
     }
 
     /**
-     * Get custom messages for validator errors.
+     *
      *
      * @return array<string, string>
      */

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateBookRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     *
      */
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class UpdateBookRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     *
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -33,7 +33,7 @@ class UpdateBookRequest extends FormRequest
     }
 
     /**
-     * Get custom messages for validator errors.
+     *
      *
      * @return array<string, string>
      */

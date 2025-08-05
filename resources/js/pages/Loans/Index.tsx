@@ -87,7 +87,7 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
     const handleReturnBook = (loanId: number) => {
         if (confirm('Are you sure you want to mark this book as returned?')) {
             router.patch(`/loans/${loanId}/return`, {
-                attendants_id: 1, // In a real app, this would be the authenticated attendant's ID
+                users_id: 1, // In a real app, this would be the authenticated attendant's ID
                 payment_amount: 0, // Default to no payment
             });
         }

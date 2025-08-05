@@ -43,19 +43,15 @@ export default function Welcome() {
                         <div className="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]">
                             <h1 className="mb-1 font-medium">This is a simple Book Lending System</h1>
                             <p className="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-                                I used Laravel 12 and Inertia.js with React to build this application.
+                                With Laravel 12 and Inertia.js with React.
                                 <br />
-                                I used Tailwind CSS for styling.
+                                Tailwind CSS for styling.
                                 <br />
-                                I maintained the styling of React starter kit
+                                maintained with the styling of React starter kit
                                 <br /><br />
-                                <strong>Note:</strong> I used copilot for seeding, migrations, and some components,
+                                <strong>Note:</strong> Used copilot for seeding, migrations,
                                 <br />
-                                correct structuring of requests and controllers,
-                                <br />
-                                and speeding up the styling of components
-                                <br />
-                                I did not use it for the main logic, only for correcting bugs that I haven't fixed.
+                                and speeding up the styling of components.
 
                                 <br /><br />
                                 <strong>Note:</strong> I am more familiar with Laravel 11 as that was the last version of Laravel I used, so I am still exploring my way around Laravel 12.

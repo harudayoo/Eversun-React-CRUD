@@ -86,7 +86,6 @@ export default function TransactionsEdit({ transaction, students, attendants }: 
     },
   ];
 
-  // Transform transaction data to remove undefined values
   const formData = Object.fromEntries(
     Object.entries(transaction).filter(([, value]) => value !== undefined)
   ) as Record<string, string | number | boolean>;

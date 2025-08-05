@@ -103,7 +103,6 @@ export default function TransactionsIndex({ transactions, filters }: Transaction
     },
   ];
 
-  // Transform the transactions data to match DataTable expectations
   const transformedTransactions = {
     data: transactions.data.map(transaction => ({ ...transaction } as Record<string, unknown>)),
     links: transactions.links,
