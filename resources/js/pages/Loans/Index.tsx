@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,8 +20,9 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { Book, Calendar, Clock, Plus, RotateCcw, Search, User } from 'lucide-react';
+import { Book, Calendar, Clock, Plus, RotateCcw, Search, User, X } from 'lucide-react';
 import type { BreadcrumbItem } from '@/types';
+import { useLoanUpdates } from '@/hooks/use-websocket-updates';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: '/dashboard' },
@@ -73,6 +74,31 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [status, setStatus] = useState(filters.status || 'all');
     const [showOverdue, setShowOverdue] = useState(filters.overdue === 'true');
+    const [isSearching, setIsSearching] = useState(false);
+
+    // Enable real-time updates via WebSocket
+    useLoanUpdates();
+
+    // Debounced search effect for automatic searching while typing
+    useEffect(() => {
+        setIsSearching(true);
+        const timeoutId = setTimeout(() => {
+            router.get('/loans', {
+                search: search || undefined,
+                status: status === 'all' ? undefined : status,
+                overdue: showOverdue ? 'true' : undefined,
+            }, {
+                preserveState: true,
+                preserveScroll: true,
+                onFinish: () => setIsSearching(false),
+            });
+        }, 300); // 300ms delay for responsive typing
+
+        return () => {
+            clearTimeout(timeoutId);
+            setIsSearching(false);
+        };
+    }, [search, status, showOverdue]);
 
     const handleSearch = () => {
         router.get('/loans', {
@@ -80,6 +106,37 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
             status: status === 'all' ? undefined : status,
             overdue: showOverdue ? 'true' : undefined,
         }, {
+            preserveState: true,
+        });
+    };
+
+    const handleStatusChange = (newStatus: string) => {
+        setStatus(newStatus);
+        router.get('/loans', {
+            search: search || undefined,
+            status: newStatus === 'all' ? undefined : newStatus,
+            overdue: showOverdue ? 'true' : undefined,
+        }, {
+            preserveState: true,
+        });
+    };
+
+    const handleOverdueChange = (checked: boolean) => {
+        setShowOverdue(checked);
+        router.get('/loans', {
+            search: search || undefined,
+            status: status === 'all' ? undefined : status,
+            overdue: checked ? 'true' : undefined,
+        }, {
+            preserveState: true,
+        });
+    };
+
+    const handleClearFilters = () => {
+        setSearch('');
+        setStatus('all');
+        setShowOverdue(false);
+        router.get('/loans', {}, {
             preserveState: true,
         });
     };
@@ -140,7 +197,7 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
                     <CardHeader>
                         <CardTitle className="text-lg">Filter Loans</CardTitle>
                         <CardDescription>
-                            Search and filter loan records
+                            Search and filter loan records (search happens automatically as you type)
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -150,14 +207,13 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
                                     Search
                                 </label>
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                    <Search className={`absolute left-3 top-3 h-4 w-4 text-muted-foreground ${isSearching ? 'animate-pulse' : ''}`} />
                                     <Input
                                         id="search"
-                                        placeholder="Search by book title, student name..."
+                                        placeholder="Type to search by book title, author, or student name..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                         className="pl-10"
-                                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                     />
                                 </div>
                             </div>
@@ -165,7 +221,7 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
                                 <label htmlFor="status" className="text-sm font-medium">
                                     Status
                                 </label>
-                                <Select value={status} onValueChange={setStatus}>
+                                <Select value={status} onValueChange={handleStatusChange}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="All statuses" />
                                     </SelectTrigger>
@@ -182,16 +238,26 @@ export default function LoansIndex({ loans, filters }: LoansIndexProps) {
                                     type="checkbox"
                                     id="overdue"
                                     checked={showOverdue}
-                                    onChange={(e) => setShowOverdue(e.target.checked)}
+                                    onChange={(e) => handleOverdueChange(e.target.checked)}
                                 />
                                 <label htmlFor="overdue" className="text-sm font-medium">
                                     Show only overdue
                                 </label>
                             </div>
-                            <Button onClick={handleSearch}>
-                                <Search className="h-4 w-4 mr-2" />
-                                Search
-                            </Button>
+                            <div className="flex gap-2">
+                                <Button onClick={handleSearch} variant="outline">
+                                    <Search className="h-4 w-4 mr-2" />
+                                    Search Now
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={handleClearFilters}
+                                    disabled={!search && status === 'all' && !showOverdue}
+                                >
+                                    <X className="h-4 w-4 mr-2" />
+                                    Clear All
+                                </Button>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\TransactionStatusChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,26 @@ class Transaction extends Model
         'transaction_date' => 'date',
     ];
 
+    /**
+     * Boot the model and register model events.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function (Transaction $transaction) {
+            // Check if status is being changed
+            if ($transaction->isDirty('status')) {
+                $oldStatus = $transaction->getOriginal('status');
+                $newStatus = $transaction->status;
+
+                // Fire event after the model is saved
+                static::updated(function ($transaction) use ($oldStatus, $newStatus) {
+                    event(new TransactionStatusChanged($transaction, $oldStatus, $newStatus));
+                });
+            }
+        });
+    }
 
     public function student(): BelongsTo
     {
@@ -62,5 +83,21 @@ class Transaction extends Model
     public function isCancelled(): bool
     {
         return $this->status === 'cancelled';
+    }
+
+    /**
+     * Mark transaction as completed
+     */
+    public function markAsCompleted(): void
+    {
+        $this->update(['status' => 'completed']);
+    }
+
+    /**
+     * Mark transaction as cancelled
+     */
+    public function markAsCancelled(): void
+    {
+        $this->update(['status' => 'cancelled']);
     }
 }

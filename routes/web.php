@@ -41,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('transactions', TransactionController::class);
     Route::resource('loans', LoanController::class);
 
+    // Special transaction operations
+    Route::patch('transactions/{transaction}/complete', [TransactionController::class, 'complete'])->name('transactions.complete');
+    Route::patch('transactions/{transaction}/cancel', [TransactionController::class, 'cancel'])->name('transactions.cancel');
+
     // Special loan operations
     Route::patch('loans/{loan}/return', [LoanController::class, 'returnBook'])->name('loans.return');
 });

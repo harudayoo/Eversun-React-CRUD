@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Book, Users, FileText, Plus, Eye, Clock, CheckCircle } from 'lucide-react';
+import { useDashboardUpdates } from '@/hooks/use-websocket-updates';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,6 +23,9 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ stats }: DashboardProps) {
+    // Enable real-time dashboard stats updates via WebSocket
+    useDashboardUpdates();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard - Book Lending System" />

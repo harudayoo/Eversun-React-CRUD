@@ -118,6 +118,28 @@ class TransactionController extends Controller
     }
 
     /**
+     * Mark transaction as completed.
+     */
+    public function complete(Transaction $transaction)
+    {
+        $transaction->markAsCompleted();
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction marked as completed. Email notification has been queued.');
+    }
+
+    /**
+     * Mark transaction as cancelled.
+     */
+    public function cancel(Transaction $transaction)
+    {
+        $transaction->markAsCancelled();
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Transaction cancelled. Email notification has been queued.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Transaction $transaction)

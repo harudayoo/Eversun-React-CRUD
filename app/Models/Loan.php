@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\LoanStatusChanged;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +39,33 @@ class Loan extends Model
         'payment_amount' => 'decimal:2',
     ];
 
+    /**
+     * Boot the model and register model events.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Fire event when a new loan is created
+        static::created(function (Loan $loan) {
+            // Fire event for new loan creation (borrowing)
+            event(new LoanStatusChanged($loan, 'new', $loan->status));
+        });
+
+        static::updating(function (Loan $loan) {
+            // Check if status is being changed
+            if ($loan->isDirty('status')) {
+                $oldStatus = $loan->getOriginal('status');
+                $newStatus = $loan->status;
+
+                // Fire event after the model is saved
+                static::updated(function ($loan) use ($oldStatus, $newStatus) {
+                    event(new LoanStatusChanged($loan, $oldStatus, $newStatus));
+                });
+            }
+        });
+    }
+
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class, 'transactions_id');
@@ -53,7 +81,7 @@ class Loan extends Model
         return $this->transaction?->student;
     }
 
-    public function attendant(): ?Attendant
+    public function attendant()
     {
         return $this->transaction?->attendant;
     }
